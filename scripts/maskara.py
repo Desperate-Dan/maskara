@@ -53,17 +53,18 @@ def main():
     '''
     parser = argparse.ArgumentParser(description='Creates a coverage mask to apply to your lovely consensus fasta.')
 
-    required_group = parser.add_argument_group('Required')
-    required_group.add_argument('-f', '--file', dest='input_file', required=True,
-                            help='Path to the BAM/SAM file you want to create a mask for.')
-
+    
     optional_group = parser.add_argument_group('Optional')
     optional_group.add_argument('-d', '--depth', dest='depth', default="20",
-                            help='If coverage is below this it will be masked.')
+                            help='If coverage is below this it will be masked')
     optional_group.add_argument('-r', '--ref-name', dest='ref_name', default="MN908947.3",
                             help='Name of ref the alignment files were aligned to. Default = "MN908947.3"')
     optional_group.add_argument('-o', '--output-name', dest='output_name', default="depth_mask",
                             help='Prefix for the output. Default = "depth_mask"')
+    
+    parser.add_argument('input_file',
+                            help='Path to the BAM/SAM file you want to create a mask for')
+
 
     args = parser.parse_args()
     runner(args)    
