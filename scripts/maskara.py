@@ -28,9 +28,7 @@ def runner(args):
         if coverage_dict[pos] < int(args.depth):
             position_list.append(pos)
         else:
-            if not position_list:
-                continue
-            else:
+            if position_list:
                 mask_pos_list.append(position_list)
             position_list = []    
     
