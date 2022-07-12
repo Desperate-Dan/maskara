@@ -35,7 +35,7 @@ def runner(args):
     #Write a "bcftools consensus" friendly file of regions to mask
     mask_file = open(args.output_name + '.tsv', 'w')
     for mask_region in mask_pos_list:
-        mask_file.write("%s\t%d\t%d\n" % (args.ref_name, mask_region[0] + 1, mask_region[-1] + 1 ))
+        mask_file.write("%s\t%d\t%d\n" % (args.ref_name, mask_region[0], mask_region[-1] + 1 ))
     mask_file.close()
 
     aln_file.close()
