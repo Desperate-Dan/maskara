@@ -9,8 +9,38 @@ import sys
 #Main body of the function
 
 def runner(args):
-    input_abspath = os.path.abspath(args.input_file)
-    print(input_abspath)
+    aln_file = pysam.AlignmentFile(args.input_file,'rb')
+
+    coverage_dict = {}
+    for i in range(0 ,aln_file.get_reference_length(args.ref_name)):
+        coverage_dict[i] = 0
+
+    for pileup_column in aln_file.pileup(args.ref_name, truncate=False, min_base_quality=0):
+        coverage_dict[pileup_column.pos] = pileup_column.n
+    
+    mask_pos_list = []
+    position_list = []
+    for pos in coverage_dict:
+        if coverage_dict[pos] < int(args.depth):
+            position_list.append(pos)
+        else:
+            if not position_list:
+                continue
+            else:
+                mask_pos_list.append(position_list)
+            position_list = []    
+    
+    mask_file = open(args.output_name + '.tsv', 'w')
+    for mask_region in mask_pos_list:
+        mask_file.write("%s\t%d\t%d\n" % (args.ref_name, mask_region[0] + 1, mask_region[-1] +1 ))
+    mask_file.close()
+
+
+    aln_file.close()
+    return coverage_dict, mask_file
+
+
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -26,7 +56,11 @@ def main():
     optional_group = parser.add_argument_group('Optional')
     optional_group.add_argument('-d', '--depth', dest='depth', default="20",
                             help='If coverage is below this it will be masked.')
-       
+    optional_group.add_argument('-r', '--ref-name', dest='ref_name', default="MN908947.3",
+                            help='Name of ref the alignment files were aligned to. Default = "MN908947.3"')
+    optional_group.add_argument('-o', '--output-name', dest='output_name', default="depth_mask",
+                            help='Prefix for the output. Default = "depth_mask"')
+
     args = parser.parse_args()
     runner(args)    
     
@@ -36,3 +70,4 @@ def main():
     
 if __name__ == "__main__":
     main()
+
