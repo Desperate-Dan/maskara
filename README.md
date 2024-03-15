@@ -5,6 +5,12 @@ A tool to create a coverage mask from BAM files to apply during consensus genera
 git clone https://github.com/Desperate-Dan/maskara.git && cd maskara
 pip install .
 ```
+
+You can now install maskara directly from pip!
+
+```
+pip install maskara
+```
 ## Usage
 ```
 usage: maskara [-h] [-d DEPTH] [-r REF_NAME] [-o OUTPUT_NAME] input_file
