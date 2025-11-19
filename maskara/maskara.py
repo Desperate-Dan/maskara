@@ -37,8 +37,8 @@ def runner(args):
     #Write a "bcftools consensus" friendly file of regions to mask
     mask_file = open(args.output_name + '.tsv', 'w')
     for mask_region in mask_pos_list:
+        #bcftools expects your mask file to be one based so need to add one to all co-ordinates
         mask_file.write("%s\t%d\t%d\n" % (args.ref_name, mask_region[0] + 1, mask_region[-1] + 1 ))
-    
     mask_file.close()
 
     #This bit actually masks a consensus file if you provide one 
@@ -75,7 +75,7 @@ def main():
     
     optional_group = parser.add_argument_group('Optional')
     optional_group.add_argument('-d', '--depth', dest='depth', default="20",
-                            help='If coverage is below this it will be masked')
+                            help='If coverage is below this it will be masked. Default = 20')
     optional_group.add_argument('-r', '--ref-name', dest='ref_name', default="MN908947.3",
                             help='Name of ref the bam files were aligned to. Default = "MN908947.3"')
     optional_group.add_argument('-o', '--output-name', dest='output_name', default="depth_mask",
