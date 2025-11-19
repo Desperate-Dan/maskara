@@ -35,8 +35,14 @@ def runner(args):
     #Write a "bcftools consensus" friendly file of regions to mask
     mask_file = open(args.output_name + '.tsv', 'w')
     for mask_region in mask_pos_list:
-        mask_file.write("%s\t%d\t%d\n" % (args.ref_name, mask_region[0], mask_region[-1] + 1 ))
+        mask_file.write("%s\t%d\t%d\n" % (args.ref_name, mask_region[0] + 1, mask_region[-1] + 1 ))
+    
     mask_file.close()
+
+    if args.mask:
+        with open(mask_file, "r") as input_mask:
+            for line in input_mask:
+                print(line)
 
     aln_file.close()
     return coverage_dict, mask_file
@@ -56,12 +62,14 @@ def main():
     optional_group.add_argument('-d', '--depth', dest='depth', default="20",
                             help='If coverage is below this it will be masked')
     optional_group.add_argument('-r', '--ref-name', dest='ref_name', default="MN908947.3",
-                            help='Name of ref the alignment files were aligned to. Default = "MN908947.3"')
+                            help='Name of ref the bam files were aligned to. Default = "MN908947.3"')
     optional_group.add_argument('-o', '--output-name', dest='output_name', default="depth_mask",
                             help='Prefix for the output. Default = "depth_mask"')
+    optional_group.add_argument('-m', '--mask', dest='mask',
+                            help='Mask a consensus sequence with your newly produced mask')
     
     parser.add_argument('input_file',
-                            help='Path to the BAM/SAM file you want to create a mask for')
+                            help='Path to the BAM file you want to create a mask for')
 
 
     args = parser.parse_args()

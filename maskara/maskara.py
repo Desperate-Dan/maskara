@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 import itertools
 import os
 import argparse
@@ -35,8 +37,27 @@ def runner(args):
     #Write a "bcftools consensus" friendly file of regions to mask
     mask_file = open(args.output_name + '.tsv', 'w')
     for mask_region in mask_pos_list:
-        mask_file.write("%s\t%d\t%d\n" % (args.ref_name, mask_region[0], mask_region[-1] + 1 ))
+        mask_file.write("%s\t%d\t%d\n" % (args.ref_name, mask_region[0] + 1, mask_region[-1] + 1 ))
+    
     mask_file.close()
+
+    #This bit actually masks a consensus file if you provide one 
+    if args.fasta_to_mask:
+        with open(args.fasta_to_mask) as cns: #Open the input
+            for seq in SeqIO.parse(cns, "fasta"): #Get the seuqence bit
+                seq_list = []
+                for base in seq: #Next section extracts the sequence to a list to allow masking with the coordinates produced earlier
+                    seq_list.append(base)
+                for line in mask_pos_list:
+                    for i in line:
+                        seq_list[i] = "N"
+                masked_seq = ''.join(seq_list)
+                new_record = SeqRecord(Seq(masked_seq), id=seq.id, name=seq.name, description=seq.description)
+
+                with open("%s.masked" % args.fasta_to_mask, "w") as output:
+                    SeqIO.write(new_record, output, "fasta")
+
+
 
     aln_file.close()
     return coverage_dict, mask_file
@@ -59,6 +80,8 @@ def main():
                             help='Name of ref the bam files were aligned to. Default = "MN908947.3"')
     optional_group.add_argument('-o', '--output-name', dest='output_name', default="depth_mask",
                             help='Prefix for the output. Default = "depth_mask"')
+    optional_group.add_argument('-m', '--mask', dest='fasta_to_mask',
+                            help='Mask a consensus sequence with your newly produced mask')
     
     parser.add_argument('input_file',
                             help='Path to the BAM file you want to create a mask for')
