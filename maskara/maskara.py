@@ -106,7 +106,9 @@ def main():
                             help='Mask a consensus sequence with your newly produced mask')
     optional_group.add_argument('-i', '--inverse', dest='inverse', action='store_true',
                             help='Return bed file of positions EQUAL OR ABOVE the chosen depth')
-    
+    optional_group.add_argument('-v', '--version', action='version', version='maskara 1.1.0',
+                                help="Return Maskara version")
+
     parser.add_argument('input_file',
                             help='Path to the BAM file you want to create a mask for')
 

@@ -30,4 +30,7 @@ Optional:
                         Name of ref the bam files were aligned to. Default = "MN908947.3"
   -o OUTPUT_NAME, --output-name OUTPUT_NAME
                         Prefix for the output. Default = "depth_mask"
+  -m FASTA_TO_MASK, --mask FASTA_TO_MASK
+                        Mask a consensus sequence with your newly produced mask
+  -i, --inverse         Return bed file of positions EQUAL OR ABOVE the chosen depth
 ```

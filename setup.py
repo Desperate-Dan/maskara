@@ -8,7 +8,7 @@ from maskara import __version__, _program
 
 setup(
     name='maskara',
-    version='1.0.0',    
+    version=__version__,    
     description='maskara',
     url='https://github.com/Desperate-Dan/maskara',
     author='Daniel Maloney',
