@@ -1,8 +1,11 @@
 Metadata-Version: 2.1
 Name: maskara
-Version: 1.1.0
+Version: 1.1.1
 Summary: maskara
 Home-page: https://github.com/Desperate-Dan/maskara
 Author: Daniel Maloney
 Author-email: dmaloney@ed.ac.uk
 License-File: LICENSE
+Requires-Dist: biopython
+Requires-Dist: pysam
+Requires-Dist: numpy

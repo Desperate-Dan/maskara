@@ -51,14 +51,16 @@ def runner(args):
     #If there are no poisitons above the threshold
     if not mask_pos_list:
         no_cov = True
-        mask_pos_list.append([0,seq_length - 1]) # -1 to preserve function with the 0vs1 base bit below
+        if not args.inverse:
+            mask_pos_list.append([0,seq_length - 1]) # -1 to preserve function with the 0vs1 base bit below
 
     #Write a "bcftools consensus" friendly file of regions to mask
-    mask_file = open(args.output_name + '.tsv', 'w')
-    for mask_region in mask_pos_list:
-        #bcftools expects your mask file to be one based so need to add one to all co-ordinates
-        mask_file.write("%s\t%d\t%d\n" % (args.ref_name, mask_region[0] + 1, mask_region[-1] + 1 ))
-    mask_file.close()
+    if mask_pos_list:
+        mask_file = open(args.output_name + '.tsv', 'w')
+        for mask_region in mask_pos_list:
+            #bcftools expects your mask file to be one based so need to add one to all co-ordinates
+            mask_file.write("%s\t%d\t%d\n" % (args.ref_name, mask_region[0] + 1, mask_region[-1] + 1 ))
+        mask_file.close()
 
     #This bit actually masks a consensus file if you provide one 
     if args.fasta_to_mask:
@@ -82,8 +84,7 @@ def runner(args):
 
 
     aln_file.close()
-    return coverage_dict, mask_file
-
+    
 
 
 
@@ -106,7 +107,7 @@ def main():
                             help='Mask a consensus sequence with your newly produced mask')
     optional_group.add_argument('-i', '--inverse', dest='inverse', action='store_true',
                             help='Return bed file of positions EQUAL OR ABOVE the chosen depth')
-    optional_group.add_argument('-v', '--version', action='version', version='maskara 1.1.0',
+    optional_group.add_argument('-v', '--version', action='version', version='maskara 1.1.1',
                                 help="Return Maskara version")
 
     parser.add_argument('input_file',
