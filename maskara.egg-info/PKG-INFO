@@ -1,6 +1,6 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: maskara
-Version: 1.1.1
+Version: 1.1.3
 Summary: maskara
 Home-page: https://github.com/Desperate-Dan/maskara
 Author: Daniel Maloney
@@ -9,3 +9,9 @@ License-File: LICENSE
 Requires-Dist: biopython
 Requires-Dist: pysam
 Requires-Dist: numpy
+Dynamic: author
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
