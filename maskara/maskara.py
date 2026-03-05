@@ -3,8 +3,6 @@
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-import itertools
-import os
 import argparse
 import pysam
 import sys
@@ -38,7 +36,7 @@ def runner(args):
             coverage_dict[i] = 0
         
         #Populate that dictionary with the read depth at each position
-        for pileup_column in aln_file.pileup(ref, truncate=False, min_base_quality=0):
+        for pileup_column in aln_file.pileup(ref, truncate=False, min_base_quality=int(args.quality)):
             coverage_dict[pileup_column.pos] = pileup_column.n
         
         #Create a list of lists containing the runs of positions below the "depth" value
@@ -126,12 +124,14 @@ def main():
                             help='Mask a consensus sequence with your newly produced mask')
     optional_group.add_argument('-i', '--inverse', dest='inverse', action='store_true',
                             help='Return bed file of positions EQUAL OR ABOVE the chosen depth')
-    optional_group.add_argument('-v', '--version', action='version', version='maskara 1.1.4',
-                                help="Return Maskara version")
+    optional_group.add_argument('-q', '--quality', dest='quality', default="20",
+                            help='Choose the minimum base quality for consideration in coverage counting. Default = 20')
     optional_group.add_argument('--mmm', dest='mmm', action='store_true',
                                 help="Multi-Map Mode: Get a depth mask for all references in your bam file with at least X reads")
     optional_group.add_argument('--reads', dest='reads', default="50",
                                 help="Set the read limit for Multi-Map Mode. If a reference has at least this many reads it will have a depth mask made (note this is not the same as depth)")
+    optional_group.add_argument('-v', '--version', action='version', version='maskara 1.1.5',
+                                help="Return Maskara version")
     
 
     parser.add_argument('input_file',
