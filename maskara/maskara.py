@@ -136,7 +136,7 @@ def main():
                                 help="Multi-Map Mode: Get a depth mask for all references in your bam file with at least X reads")
     optional_group.add_argument('--reads', dest='reads', default="50",
                                 help="Set the read limit for Multi-Map Mode. If a reference has at least this many reads it will have a depth mask made (note this is not the same as depth)")
-    optional_group.add_argument('-v', '--version', action='version', version='maskara 1.1.5',
+    optional_group.add_argument('-v', '--version', action='version', version='maskara 1.1.6',
                                 help="Return Maskara version")
     
 
