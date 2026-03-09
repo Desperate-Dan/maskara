@@ -36,9 +36,15 @@ def runner(args):
             coverage_dict[i] = 0
         
         #Populate that dictionary with the read depth at each position
-        for pileup_column in aln_file.pileup(ref, truncate=False, min_base_quality=int(args.quality)): #I'm not sure this passes through how I might expect... I can't get it to filter everything out...
-            coverage_dict[pileup_column.pos] = pileup_column.n
-        
+        for pileup_column in aln_file.pileup(ref, truncate=False, min_base_quality=0):
+            #It turns out that using pileup_column.n ignores the min_base_quality arg so either need to enact the filter differently or change the couting method.
+            #Could use the logic from piranha as that does individual base counts which might be nice to have, but keeping it simple here for now.
+            good_bases = 0
+            qualities_list = pileup_column.get_query_qualities()
+            for base_q in qualities_list:
+                if base_q > int(args.quality):
+                    good_bases += 1
+            coverage_dict[pileup_column.pos] = good_bases
         #Create a list of lists containing the runs of positions below the "depth" value
         mask_pos_list = []
         position_list = []
