@@ -13,14 +13,16 @@ pip install maskara
 ```
 ## Usage
 ```
-usage: maskara [-h] [-d DEPTH] [-r REF_NAME] [-o OUTPUT_NAME] input_file
+Maskara v1.1.7
+
+usage: maskara.py [-h] [-d DEPTH] [-r REF_NAME] [-o OUTPUT_NAME] [-m FASTA_TO_MASK] [-i] [-q QUALITY] [--mmm] [--reads READS] [-v] input_file
 
 Creates a coverage mask to apply to your lovely consensus fasta.
 
 positional arguments:
   input_file            Path to the BAM file you want to create a mask for
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
 
 Optional:
@@ -33,4 +35,9 @@ Optional:
   -m FASTA_TO_MASK, --mask FASTA_TO_MASK
                         Mask a consensus sequence with your newly produced mask
   -i, --inverse         Return bed file of positions EQUAL OR ABOVE the chosen depth
+  -q QUALITY, --quality QUALITY
+                        Choose the minimum base quality for consideration in coverage counting. Default = 20
+  --mmm                 Multi-Map Mode: Get a depth mask for all references in your bam file with at least X reads
+  --reads READS         Set the read limit for Multi-Map Mode. If a reference has at least this many reads it will have a depth mask made (note this is not the same as depth)
+  -v, --version         Return Maskara version
 ```
