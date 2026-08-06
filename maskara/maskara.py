@@ -6,6 +6,8 @@ from Bio.SeqRecord import SeqRecord
 import argparse
 import pysam
 import sys
+import plotly.express as px
+import pandas as pd
 
 #Main body of the function
 def ref_finder(aln_file,reads):
@@ -68,6 +70,12 @@ def runner(args):
                     if position_list:
                         mask_pos_list.append(position_list)
                     position_list = []
+
+        if coverage_plot:
+            #Plot the coverage across the reference and add a line for the depth threshold
+            fig = px.line(x=list(coverage_dict.keys()), y=list(coverage_dict.values()), labels={'x':'Position', 'y':'Coverage'}, title=f'Coverage across {ref}')
+            fig.add_hline(y=int(args.depth), line_dash="dot", line_color="red", annotation_text=f"Depth threshold: {args.depth}", annotation_position="top left")
+            fig.write_html(f"{ref}_coverage_plot.html")
         
         #If there are no poisitons above the threshold
         if not mask_pos_list:
@@ -136,6 +144,8 @@ def main():
                                 help="Multi-Map Mode: Get a depth mask for all references in your bam file with at least X reads")
     optional_group.add_argument('--reads', dest='reads', default="50",
                                 help="Set the read limit for Multi-Map Mode. If a reference has at least this many reads it will have a depth mask made (note this is not the same as depth)")
+    optional_group.add_argument('--coverage_plot', dest='coverage_plot', action='store_true',
+                                help="Generate a coverage plot for each reference")
     optional_group.add_argument('-v', '--version', action='version', version='maskara 1.1.7',
                                 help="Return Maskara version")
     
