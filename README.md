@@ -13,7 +13,7 @@ pip install maskara
 ```
 ## Usage
 ```
-Maskara v1.1.8
+Maskara v1.1.9
 
 usage: maskara [-h] [-d DEPTH] [-r REF_NAME] [-o OUTPUT_NAME] [-m FASTA_TO_MASK] [-i] [-q QUALITY] [--mmm] [--reads READS] [--coverage_plot] [--coverage_data] [-v] input_file
 

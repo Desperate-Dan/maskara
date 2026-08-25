@@ -154,7 +154,7 @@ def main():
                             help="Generate a coverage plot for each reference")
     optional_group.add_argument('--coverage_data', dest='coverage_data', action='store_true',
                             help="Output a csv of coverage values per position for each reference")
-    optional_group.add_argument('-v', '--version', action='version', version='maskara 1.1.8',
+    optional_group.add_argument('-v', '--version', action='version', version='maskara 1.1.9',
                             help="Return Maskara version")
     
 
