@@ -15,8 +15,10 @@ setup(
     packages=find_packages(),
     scripts=['maskara/maskara.py'],
     install_requires=['biopython',
-                        "pysam",
-                        "numpy"
+                        'pysam',
+                        'numpy',
+                        'plotly',
+                        'pandas'
                       ],
     entry_points="""
     [console_scripts]
